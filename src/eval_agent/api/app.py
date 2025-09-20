@@ -31,6 +31,7 @@ DEFAULT_DB_PATH = RUNS_DIR / "evaluations.db"
 PRESET_CONFIGS = {
     "sentiment-keyword": BASE_DIR / "configs" / "sentiment_keyword.json",
     "sentiment-sklearn": BASE_DIR / "configs" / "sentiment_sklearn.json",
+    "rag-langchain": BASE_DIR / "configs" / "rag_langchain.json",
 }
 
 app = FastAPI(title="Evaluation Agent API", version="0.1.0")
