@@ -1,0 +1,26 @@
+{
+  "name": "sentiment-keyword-baseline",
+  "task": "text-classification",
+  "model": {
+    "type": "keyword-matching",
+    "parameters": {
+      "positive_keywords": ["love", "fantastic", "outstanding", "charm"],
+      "negative_keywords": ["terrible", "worst", "awful", "rude"],
+      "default_label": "neutral"
+    }
+  },
+  "dataset": {
+    "type": "jsonl-classification",
+    "parameters": {
+      "path": "../data/sentiment_eval.jsonl"
+    }
+  },
+  "metrics": [
+    {"type": "accuracy", "name": "accuracy"},
+    {"type": "label-distribution", "name": "label_distribution"}
+  ],
+  "output": {
+    "directory": "../runs",
+    "save_predictions": true
+  }
+}

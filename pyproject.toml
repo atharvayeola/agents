@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evaluation-agent"
+version = "0.1.0"
+description = "Automation agent for evaluating AI models."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "AI Assistant" }]
+dependencies = []
+
+[project.scripts]
+evaluation-agent = "eval_agent.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
