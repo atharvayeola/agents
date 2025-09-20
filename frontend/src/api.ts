@@ -1,7 +1,22 @@
 import axios from 'axios';
 
+
+const configuredBase = import.meta.env.VITE_API_BASE_URL as string | undefined;
+const normalizedBase = (() => {
+  const fallback = 'http://localhost:8000';
+  const base = (configuredBase && configuredBase.trim().length > 0)
+    ? configuredBase.trim()
+    : fallback;
+  const sanitized = base.endsWith('/') ? base.slice(0, -1) : base;
+  return sanitized.endsWith('/api') ? sanitized : `${sanitized}/api`;
+})();
+
+const apiClient = axios.create({
+  baseURL: normalizedBase
+=======
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000/api'
+
 });
 
 export interface Metric {
