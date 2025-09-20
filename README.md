@@ -42,6 +42,10 @@ tests/                    # Pytest integration tests, including API coverage
 
    This reads `data/sentiment_train.jsonl` and writes
    `artifacts/sentiment_pipeline.joblib` used by the production configuration.
+   The serialized artifact is intentionally excluded from version control, so
+   contributors should run `python scripts/train_sentiment_model.py` locally
+   whenever the model needs to be regenerated (for example after updating the
+   training data) before executing workflows that depend on it.
 
 3. **Run an evaluation using either of the provided configurations:**
 
