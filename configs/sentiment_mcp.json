@@ -1,0 +1,32 @@
+{
+  "name": "sentiment-mcp-remote",
+  "task": "text-classification",
+  "model": {
+    "type": "mcp",
+    "parameters": {
+      "endpoint": "https://example.com/mcp",  
+      "model_id": "sentiment-classifier",
+      "instruction": "Classify the review as positive, negative, or neutral.",
+      "auth": {
+        "type": "bearer",
+        "token_env": "MCP_API_KEY"
+      }
+    }
+  },
+  "dataset": {
+    "type": "jsonl-classification",
+    "parameters": {
+      "path": "../data/sentiment_eval.jsonl"
+    }
+  },
+  "metrics": [
+    {"type": "accuracy", "name": "accuracy"},
+    {"type": "precision", "name": "precision_macro", "parameters": {"average": "macro"}},
+    {"type": "recall", "name": "recall_macro", "parameters": {"average": "macro"}},
+    {"type": "f1", "name": "f1_macro", "parameters": {"average": "macro"}}
+  ],
+  "output": {
+    "directory": "../runs",
+    "save_predictions": true
+  }
+}
