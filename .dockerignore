@@ -1,0 +1,15 @@
+.git
+.gitignore
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.python-version
+runs/
+node_modules/
+frontend/node_modules/
+frontend/dist/
+artifacts/
+*.joblib
+.env
+*.sqlite

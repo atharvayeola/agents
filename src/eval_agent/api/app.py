@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import List
 
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
+
 from fastapi.middleware.cors import CORSMiddleware
 
 from eval_agent import EvaluationAgent, load_config
@@ -22,6 +24,7 @@ from eval_agent.api.storage import RunStore
 from eval_agent.runner import EvaluationResult
 
 BASE_DIR = Path(__file__).resolve().parents[2]
+FRONTEND_DIST = BASE_DIR / "frontend" / "dist"
 RUNS_DIR = BASE_DIR / "runs"
 DEFAULT_DB_PATH = RUNS_DIR / "evaluations.db"
 
@@ -40,6 +43,21 @@ app.add_middleware(
 
 store = RunStore(DEFAULT_DB_PATH)
 
+
+if FRONTEND_DIST.exists():
+    app.mount("/", StaticFiles(directory=FRONTEND_DIST, html=True), name="frontend")
+else:
+
+    @app.get("/", include_in_schema=False)
+    def serve_index() -> None:
+        raise HTTPException(status_code=404, detail="Frontend bundle not found")
+
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    def serve_frontend(full_path: str) -> None:
+        if full_path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="API route not found")
+        raise HTTPException(status_code=404, detail="Frontend bundle not found")
 
 @app.on_event("startup")
 def _startup() -> None:
