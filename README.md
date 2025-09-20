@@ -2,9 +2,11 @@
 
 This repository contains an end-to-end evaluation stack for text-classification models. It ships with
 
+## Features
 - a modular Python evaluation agent capable of orchestrating datasets, model adapters, and metrics,
 - a FastAPI service with a SQLite-backed run history, and
 - a Vite + React dashboard for visualising metrics and predictions.
+
 
 The default workflow benchmarks sentiment analysis models on small JSONL datasets. Two presets are
 provided out of the box: a deterministic keyword baseline and a scikit-learn TF-IDF + logistic
@@ -45,7 +47,8 @@ This reads `data/sentiment_train.jsonl`, evaluates on `data/sentiment_eval.jsonl
 `artifacts/sentiment_pipeline.joblib` used by the `sentiment-sklearn` preset.
 
 ### 3. Execute an evaluation from the CLI
-<!-- 
+
+Two configuration files live under `configs/`:
 
 ```bash
 # Keyword baseline
@@ -105,6 +108,7 @@ engine.
   `@METRIC_REGISTRY.register("metric-name")`.
 - Surface new presets in the API/dashboard by updating `PRESET_CONFIGS` in
   `src/eval_agent/api/app.py`.
+
 
 Each component becomes available in configuration files, through the CLI, and via the HTTP API as soon
 as it is registered.
