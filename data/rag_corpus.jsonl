@@ -1,0 +1,3 @@
+{"id": "doc1", "text": "LangChain is a framework for building LLM-powered applications."}
+{"id": "doc2", "text": "Vector stores index dense embeddings to support semantic document search."}
+{"id": "doc3", "text": "Retrieval-augmented generation uses retrieved knowledge to ground model outputs."}

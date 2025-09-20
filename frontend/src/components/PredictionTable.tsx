@@ -30,17 +30,56 @@ const PredictionTable: FC<PredictionTableProps> = ({ predictions, limit = 50 }) 
 
   const displayed = predictions.slice(0, limit);
 
-  const renderProbabilities = (metadata: Record<string, unknown>) => {
+  const renderConfidenceCell = (metadata: Record<string, unknown>) => {
     const probabilities = metadata?.probabilities as Record<string, number> | undefined;
-    if (!probabilities) {
-      return null;
+    const confidence = typeof metadata?.confidence === 'number' ? (metadata.confidence as number) : undefined;
+
+    const elements: JSX.Element[] = [];
+    if (typeof confidence === 'number') {
+      elements.push(
+        <Typography key="confidence" variant="body2">
+          {(confidence * 100).toFixed(1)}%
+        </Typography>
+      );
     }
-    const sorted = Object.entries(probabilities).sort((a, b) => b[1] - a[1]).slice(0, 3);
+
+    if (probabilities) {
+      const sorted = Object.entries(probabilities).sort((a, b) => b[1] - a[1]).slice(0, 3);
+      elements.push(
+        <Box key="probabilities" display="flex" gap={1} flexWrap="wrap">
+          {sorted.map(([label, value]) => (
+            <Chip key={label} label={`${label}: ${(value * 100).toFixed(1)}%`} size="small" color="primary" variant="outlined" />
+          ))}
+        </Box>
+      );
+    }
+
+    if (!elements.length) {
+      return <Typography variant="body2" color="text.secondary">—</Typography>;
+    }
+
     return (
-      <Box display="flex" gap={1} flexWrap="wrap">
-        {sorted.map(([label, value]) => (
-          <Chip key={label} label={`${label}: ${(value * 100).toFixed(1)}%`} size="small" color="primary" variant="outlined" />
-        ))}
+      <Box display="flex" flexDirection="column" gap={0.5} alignItems="flex-start">
+        {elements}
+      </Box>
+    );
+  };
+
+  const renderRetrievedContexts = (metadata: Record<string, unknown>) => {
+    const retrieved = metadata?.retrieved_documents as Array<Record<string, unknown>> | undefined;
+    if (!Array.isArray(retrieved) || !retrieved.length) {
+      return <Typography variant="body2" color="text.secondary">—</Typography>;
+    }
+
+    const top = retrieved.slice(0, 3);
+    return (
+      <Box display="flex" flexDirection="column" gap={0.5} alignItems="flex-start">
+        {top.map((entry, index) => {
+          const id = typeof entry?.id === 'string' ? entry.id : `doc-${index + 1}`;
+          const score = typeof entry?.score === 'number' ? (entry.score as number) : undefined;
+          const label = score !== undefined ? `${id} · ${(score * 100).toFixed(1)}%` : id;
+          return <Chip key={`${id}-${index}`} label={label} size="small" variant="outlined" color="secondary" />;
+        })}
       </Box>
     );
   };
@@ -55,6 +94,7 @@ const PredictionTable: FC<PredictionTableProps> = ({ predictions, limit = 50 }) 
             <TableCell>Expected</TableCell>
             <TableCell>Predicted</TableCell>
             <TableCell>Confidence</TableCell>
+            <TableCell>Retrieved Contexts</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -75,7 +115,8 @@ const PredictionTable: FC<PredictionTableProps> = ({ predictions, limit = 50 }) 
                     {String(prediction.predicted_output ?? '—')}
                   </Typography>
                 </TableCell>
-                <TableCell>{renderProbabilities(prediction.metadata ?? {})}</TableCell>
+                <TableCell>{renderConfidenceCell(prediction.metadata ?? {})}</TableCell>
+                <TableCell>{renderRetrievedContexts(prediction.metadata ?? {})}</TableCell>
               </TableRow>
             );
           })}

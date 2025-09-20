@@ -29,9 +29,11 @@ tests/                    # Pytest-based regression tests
 pip install -e .
 ```
 
-
-The Python package depends on FastAPI, uvicorn, and scikit-learn. Frontend dependencies are managed
-with `npm` inside the `frontend/` directory.
+The Python package now bundles LangChain and the `faiss-cpu` vector store so retrieval-augmented
+generation (RAG) workflows work out of the box. Installing via `pip` on Linux and macOS will pull in
+pre-built FAISS wheels; Windows users can either rely on WSL or install FAISS via Conda before
+running `pip install -e .`. Frontend dependencies are managed with `npm` inside the `frontend/`
+directory.
 
 ### 2. (Optional) Train the scikit-learn sentiment model
 
@@ -56,9 +58,14 @@ python -m eval_agent.cli run configs/sentiment_keyword.json
 # Trained scikit-learn pipeline (requires the artifact from step 2)
 python -m eval_agent.cli run configs/sentiment_sklearn.json
 
+\
 # Remote MCP-backed model (set the endpoint and export MCP_API_KEY before running)
 export MCP_API_KEY=your_api_key
 python -m eval_agent.cli run configs/sentiment_mcp.json
+=======
+# Retrieval-augmented generation demo powered by LangChain + FAISS
+python -m eval_agent.cli run configs/rag_langchain.json
+
 ```
 
 Results are written to `runs/` as JSON (ignored by git). The CLI will also print a summary and, by
@@ -100,8 +107,8 @@ or `npm run build`. When you build for production against the co-hosted FastAPI 
 pytest
 ```
 
-The tests cover the keyword baseline configuration to guard against regressions in the evaluation
-engine.
+The tests cover both the keyword baseline and the LangChain-powered RAG configuration to guard
+against regressions in the evaluation engine.
 
 ## Deployment
 
