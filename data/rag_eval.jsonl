@@ -1,0 +1,3 @@
+{"id": "q1", "question": "What is LangChain used for?", "answer": "LangChain is a framework for building LLM-powered applications.", "context_ids": ["doc1"]}
+{"id": "q2", "question": "Why do we need vector stores when building RAG systems?", "answer": "Vector stores index dense embeddings to support semantic document search.", "context_ids": ["doc2"]}
+{"id": "q3", "question": "Describe retrieval-augmented generation in one sentence.", "answer": "Retrieval-augmented generation uses retrieved knowledge to ground model outputs.", "context_ids": ["doc3"]}

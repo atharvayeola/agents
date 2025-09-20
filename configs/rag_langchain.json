@@ -1,0 +1,29 @@
+{
+  "name": "langchain-rag-demo",
+  "task": "retrieval-qa",
+  "model": {
+    "type": "langchain-rag",
+    "parameters": {
+      "documents_path": "../data/rag_corpus.jsonl",
+      "retriever_top_k": 2,
+      "embedding_size": 128,
+      "default_response": "Unable to answer with available context."
+    }
+  },
+  "dataset": {
+    "type": "jsonl-rag",
+    "parameters": {
+      "path": "../data/rag_eval.jsonl",
+      "contexts_path": "../data/rag_corpus.jsonl"
+    }
+  },
+  "metrics": [
+    {"type": "rouge-l", "name": "rouge_l"},
+    {"type": "bleu", "name": "bleu"},
+    {"type": "context-precision", "name": "context_precision"}
+  ],
+  "output": {
+    "directory": "../runs",
+    "save_predictions": true
+  }
+}
