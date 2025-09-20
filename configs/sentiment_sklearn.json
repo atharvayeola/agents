@@ -1,12 +1,11 @@
 {
-  "name": "sentiment-keyword-baseline",
+  "name": "sentiment-sklearn-tfidf",
   "task": "text-classification",
   "model": {
-    "type": "keyword-matching",
+    "type": "sklearn-pipeline",
     "parameters": {
-      "positive_keywords": ["love", "fantastic", "outstanding", "charm"],
-      "negative_keywords": ["terrible", "worst", "awful", "rude"],
-      "default_label": "neutral"
+      "artifact_path": "../artifacts/sentiment_pipeline.joblib",
+      "name": "sentiment-logreg"
     }
   },
   "dataset": {
@@ -18,6 +17,7 @@
   "metrics": [
     {"type": "accuracy", "name": "accuracy"},
     {"type": "precision", "name": "precision_macro", "parameters": {"average": "macro"}},
+    {"type": "precision", "name": "precision_weighted", "parameters": {"average": "weighted"}},
     {"type": "recall", "name": "recall_macro", "parameters": {"average": "macro"}},
     {"type": "f1", "name": "f1_macro", "parameters": {"average": "macro"}},
     {"type": "confusion-matrix", "name": "confusion_matrix"},

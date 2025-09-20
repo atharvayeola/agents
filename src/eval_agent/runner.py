@@ -54,6 +54,7 @@ class EvaluationAgent:
         )
         model = MODEL_REGISTRY.create(self.config.model.type, **self.config.model.parameters)
         task = TASK_REGISTRY.create(self.config.task, dataset, model)
+        task.warmup(dataset.examples())
 
         metric_instances = self._build_metrics(self.config.metrics)
 

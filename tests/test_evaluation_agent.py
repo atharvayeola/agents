@@ -25,6 +25,17 @@ def test_keyword_model_evaluation(tmp_path: Path) -> None:
     assert accuracy.details["total"] == 6
     assert accuracy.details["correct"] == 6
 
+    metrics = {metric.name: metric for metric in result.metrics}
+    assert metrics["precision_macro"].value == 1.0
+    assert metrics["recall_macro"].value == 1.0
+    assert metrics["f1_macro"].value == 1.0
+
+    confusion = metrics["confusion_matrix"].details
+    labels = confusion["labels"]
+    matrix = confusion["matrix"]
+    assert len(labels) == len(matrix)
+    assert sum(matrix[i][i] for i in range(len(labels))) == len(result.predictions)
+
     saved_payload = json.loads(result.output_path.read_text(encoding="utf-8"))
     assert saved_payload["name"] == "sentiment-keyword-baseline"
     assert saved_payload["metrics"][0]["name"] == "accuracy"

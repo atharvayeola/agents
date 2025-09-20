@@ -50,17 +50,34 @@ def _resolve_path(value: str | Path, *, base_dir: Path) -> Path:
     return path
 
 
+def _resolve_parameter_paths(parameters: Dict[str, Any], *, base_dir: Path) -> Dict[str, Any]:
+    resolved: Dict[str, Any] = {}
+    for key, value in parameters.items():
+        if isinstance(value, str) and (key.endswith("_path") or key.endswith("_dir") or key in {"path", "directory"}):
+            resolved[key] = str(_resolve_path(value, base_dir=base_dir))
+        else:
+            resolved[key] = value
+    return resolved
+
+
 def load_config(path: str | Path) -> EvaluationConfig:
     path = Path(path)
     with path.open("r", encoding="utf-8") as handle:
         raw = json.load(handle)
 
     base_dir = path.parent
-    model = ModelConfig(**raw["model"])
+
+    model_params = raw["model"].get("parameters", {})
+    model = ModelConfig(
+        type=raw["model"]["type"],
+        parameters=_resolve_parameter_paths(model_params, base_dir=base_dir),
+    )
+
     dataset_params = raw["dataset"].get("parameters", {})
-    if "path" in dataset_params:
-        dataset_params["path"] = str(_resolve_path(dataset_params["path"], base_dir=base_dir))
-    dataset = DatasetConfig(type=raw["dataset"]["type"], parameters=dataset_params)
+    dataset = DatasetConfig(
+        type=raw["dataset"]["type"],
+        parameters=_resolve_parameter_paths(dataset_params, base_dir=base_dir),
+    )
 
     metrics = [
         MetricConfig(
