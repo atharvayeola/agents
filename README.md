@@ -55,6 +55,10 @@ python -m eval_agent.cli run configs/sentiment_keyword.json
 
 # Trained scikit-learn pipeline (requires the artifact from step 2)
 python -m eval_agent.cli run configs/sentiment_sklearn.json
+
+# Remote MCP-backed model (set the endpoint and export MCP_API_KEY before running)
+export MCP_API_KEY=your_api_key
+python -m eval_agent.cli run configs/sentiment_mcp.json
 ```
 
 Results are written to `runs/` as JSON (ignored by git). The CLI will also print a summary and, by
@@ -171,6 +175,10 @@ python -m eval_agent.cli run configs/sentiment_keyword.json
 
 # Trained scikit-learn pipeline (requires the artifact from step 2)
 python -m eval_agent.cli run configs/sentiment_sklearn.json
+
+# Remote MCP-backed model (set the endpoint and export MCP_API_KEY before running)
+export MCP_API_KEY=your_api_key
+python -m eval_agent.cli run configs/sentiment_mcp.json
 ```
 
 Results are written to `runs/` as JSON (ignored by git). The CLI will also print a summary and, by
