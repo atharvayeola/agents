@@ -45,8 +45,7 @@ This reads `data/sentiment_train.jsonl`, evaluates on `data/sentiment_eval.jsonl
 `artifacts/sentiment_pipeline.joblib` used by the `sentiment-sklearn` preset.
 
 ### 3. Execute an evaluation from the CLI
-
-Two configuration files live under `configs/`:
+<!-- 
 
 ```bash
 # Keyword baseline
