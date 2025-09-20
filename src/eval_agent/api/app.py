@@ -8,6 +8,7 @@ from typing import List
 
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
+
 from fastapi.middleware.cors import CORSMiddleware
 
 from eval_agent import EvaluationAgent, load_config
@@ -57,7 +58,6 @@ else:
         if full_path.startswith("api/"):
             raise HTTPException(status_code=404, detail="API route not found")
         raise HTTPException(status_code=404, detail="Frontend bundle not found")
-
 
 @app.on_event("startup")
 def _startup() -> None:
